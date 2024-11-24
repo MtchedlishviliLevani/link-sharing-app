@@ -16,9 +16,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
             console.error(error)
         }
     }
-    const handleSignUp = async (email: string, password: string) => {
+    const handleSignUp = async (email: string, password: string, name: string) => {
         try {
-            const newUser = await signUpWithEmailAndPassword(email, password)
+            const newUser = await signUpWithEmailAndPassword(email, password, name)
             if (newUser) {
                 setUser(newUser)
             }

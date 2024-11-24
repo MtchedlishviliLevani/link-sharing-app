@@ -5,7 +5,11 @@ export type UserType = null | undefined | User;
 export interface AuthContext {
   user: UserType;
   handleLogin: (email: string, password: string) => Promise<void>;
-  handleSignUp: (email: string, password: string) => Promise<void>;
+  handleSignUp: (
+    email: string,
+    password: string,
+    name: string
+  ) => Promise<void>;
   handleLoggout: () => Promise<void>;
 }
 export const authContext = createContext<AuthContext>({
