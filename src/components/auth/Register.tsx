@@ -4,15 +4,6 @@ import { useState } from "react";
 function Register() {
     const { handleSignUp, } = useAuth();
     const [formData, setFormData] = useState({ displayName: "", email: "", password: "" })
-    // const [displayName, setDisplayName] = useState("")
-    // const [email, setEmail] = useState('');
-    // const [password, setPassword] = useState('');
-
-    // const handleSubmit = (e: React.FormEvent) => {
-    //     e.preventDefault();
-    //     handleSignUp(email, password);
-    // };
-
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         const { displayName, email, password } = formData

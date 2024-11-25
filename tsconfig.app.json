@@ -26,7 +26,8 @@
     "baseUrl": ".", // Base directory for resolving non-relative imports
     "paths": {
       "@/*": ["src/*"], // Alias '@' to the 'src' directory
-      "@components/*": ["src/components/*"] // Alias for the 'components' folder (optional)
+      "@components/*": ["src/components/*"], // Alias for the 'components' folder (optional)
+      "@images/*": ["src/assets/images/*"]
     }
   },
   "include": ["src"]

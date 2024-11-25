@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        instrument: ["InstrumentSans", "sans-serif"],
+      },
       colors: {
         // Primary Colors
         primary: "#007BFF", // Bright Blue

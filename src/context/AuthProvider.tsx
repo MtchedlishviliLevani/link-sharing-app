@@ -1,10 +1,14 @@
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { authContext } from "@/context/authContext"
 // import { User } from "firebase/auth";
 import { loggout, loginWithEmailAndPassword, signUpWithEmailAndPassword } from "@/services/authService";
 import { UserType } from "@/context/authContext";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/firebase/firebase";
+
 function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserType>(null);
+    const [loading, setLoading] = useState<boolean>(true)
 
     const handleLogin = async (email: string, password: string) => {
         try {
@@ -26,6 +30,25 @@ function AuthProvider({ children }: { children: ReactNode }) {
             console.error("something wrong", error)
         }
     }
+    // Monitor auth state changes
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (firebaseUser) {
+                // Convert Firebase User to your UserType, if needed
+                const loggedInUser: UserType = {
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                    displayName: firebaseUser.displayName,
+                };
+                setUser(loggedInUser);
+            } else {
+                setUser(null);
+            }
+            setLoading(false); // Set loading to false after initial check
+        });
+
+        return () => unsubscribe(); // Cleanup listener on unmount
+    }, []);
 
     const handleLoggout = async () => {
         try {
@@ -39,7 +62,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
     return (
         <authContext.Provider value={{ handleLoggout, handleLogin, handleSignUp, user }}>
-            {children}
+            {!loading ? children : <div>Loading...</div>} {/* Show loading state */}
         </authContext.Provider>
     )
 }
