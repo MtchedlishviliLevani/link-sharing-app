@@ -15,14 +15,26 @@ body {
   font-family: "InstrumentSans";
 }
 
+.form-h1 {
+  @apply text-[28px] font-bold;
+}
+
 .form-label {
-  @apply block text-[10px] font-medium text-lightText;
+  @apply block text-[10px] font-medium text-lightText mb-[4px];
+}
+
+.form-input-container {
+  @apply rounded-[8px] outline-none px-[5px] py-[4px] border-[#333] border-solid border-[1px] flex relative;
 }
 
 .form-input {
-  @apply rounded-[8px] outline-none py-[4px];
+  @apply px-[35px] py-[5px] outline-none;
+}
+
+.form-input-icon {
+  @apply absolute left-[10px] top-[50%] translate-y-[-50%];
 }
 
 .form-btn {
-  @apply block bg-primary text-white w-[100%] py-[12px] rounded-[8px];
+  @apply block bg-btnBg text-white w-[100%] py-[12px] rounded-[8px];
 }

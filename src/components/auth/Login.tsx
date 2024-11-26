@@ -2,15 +2,15 @@ import { useAuth } from "@/hooks/useAuth"
 import { useState } from "react";
 import logoDevlinksLarge from "@images/logo-devlinks-large.svg"
 import emailIcon from "@images/icon-email.svg"
-function Login() {
+import passwordIcon from "@images/icon-password.svg"
+import Input from "@/components/common/Input";
 
+function Login() {
     const { handleLogin, user } = useAuth();
-    console.log(user)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
-
+    // form onSubmit function
     function onSubmit(e: React.FormEvent) {
         e.preventDefault();
         handleLogin(email, password)
@@ -18,17 +18,32 @@ function Login() {
     return (
         <div className="max-w-[480px] grid place-items-center">
             <img src={logoDevlinksLarge} alt="" />
-            <h1 className="text-black">Login</h1>
-            <p className="text-lightText">Add your details below to get back into the app</p>
-            <form action="" onSubmit={onSubmit} className="">
-                <label htmlFor="" className="form-label">Email Address</label>
-                <div className=" flex relative">
-                    <img src={emailIcon} className="absolute left-[10px] top-[50%] translate-y-[-50%]" alt="" />
-                    <input type="email" className="form-input" value={email} onChange={(e) => setEmail(e.target.value)} /></div>
-                <label className="form-label">Password</label>
-                <div><input type="password" className="form-input" value={password} onChange={(e) => setPassword(e.target.value)} /></div>
+            <form action="" onSubmit={onSubmit} className="flex flex-col gap-[25px]">
+                <div>
+                    <h1 className="form-h1">Login</h1>
+                    <p className="text-lightText">Add your details below to get back into the app</p></div>
+                <div>
+                    <Input inputProps={{
+                        type: "email",
+                        label: "Email Address",
+                        value: email,
+                        onChange: (e) => setEmail(e.target.value),
+                        placeholder: "Enter your email",
+                        icon: emailIcon,
+                    }} />
+                </div>
+                <div>
+                    <Input inputProps={{
+                        type: "password",
+                        label: "Password",
+                        value: password,
+                        onChange: (e) => setPassword(e.target.value),
+                        placeholder: "Enter your Password",
+                        icon: passwordIcon,
+                    }} />
+                </div>
                 <button type="submit" className="form-btn">Login</button>
-                <div>Don't have an account? <span className="text-primary">Create account</span></div>
+                <p className="text-lightText text-[13px] text-center">Don't have an account? <button className="text-primary">Create account</button></p>
             </form>
         </div>
     )
