@@ -1,4 +1,5 @@
 import { auth } from "@/firebase/firebase";
+import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -43,7 +44,11 @@ export const loginWithEmailAndPassword = async (
     );
     return userCredential.user;
   } catch (error) {
-    console.error(error);
+    if (error instanceof FirebaseError) {
+      throw new Error(`Firebase Error (${error.code}): ${error.message}`);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
   }
 };
 

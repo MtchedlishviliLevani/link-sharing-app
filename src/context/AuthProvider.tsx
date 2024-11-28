@@ -17,7 +17,13 @@ function AuthProvider({ children }: { children: ReactNode }) {
                 setUser(loggedInUser)
             }
         } catch (error) {
-            console.error(error)
+            if (error instanceof Error) {
+                // Now TypeScript knows 'error' is of type 'Error'
+                throw new Error(error.message);
+            } else {
+                // Handle other error types (e.g., if it's not an Error object)
+                throw new Error("An unknown error occurred");
+            }
         }
     }
     const handleSignUp = async (email: string, password: string, name: string) => {

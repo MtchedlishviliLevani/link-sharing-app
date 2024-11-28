@@ -1,6 +1,4 @@
-import Login from '@/components/auth/Login'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
-import Register from '@/components/auth/Register'
 import { useAuth } from '@/hooks/useAuth'
 import Auth from '@/pages/Auth'
 import Home from '@/pages/Home'
@@ -17,9 +15,9 @@ const route = createBrowserRouter([{
   ],
 },
 {
-  path: "/auth", element: <Auth />,
+  path: "/auth", element: <Auth />,// Auth page (public route)
 
-}, // Auth page (public route)
+},
 ])
 
 function App() {

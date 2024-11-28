@@ -1,7 +1,13 @@
 import { createContext } from "react";
-import { User } from "firebase/auth";
 
-export type UserType = null | undefined | User;
+export type UserType =
+  | null
+  | undefined
+  | {
+      uid: string;
+      email: string | null;
+      displayName: string | null;
+    };
 export interface AuthContext {
   user: UserType;
   handleLogin: (email: string, password: string) => Promise<void>;

@@ -18,6 +18,10 @@ body {
   width: 100%;
 }
 
+.form {
+  @apply flex flex-col gap-[25px] bg-white p-[40px] rounded-[12px];
+}
+
 .form-h1 {
   @apply text-[28px] font-bold;
 }
