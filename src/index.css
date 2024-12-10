@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "InstrumentSans";
+  src: url("/src/assets/fonts/InstrumentSans-VariableFont_wdth,wght.ttf")
+    format("truetype");
+  font-weight: 100 900; /* Supports a range of weights */
+  font-stretch: 50% 200%; /* Supports a range of widths */
+  font-style: normal;
+}
+
+body {
+  font-family: "InstrumentSans";
+  background-color: #fafafa;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.form {
+  @apply flex flex-col gap-[15px] bg-white p-[40px] rounded-[12px];
+}
+
+.form-h1 {
+  @apply text-[28px] font-bold;
+}
+
+.form-label {
+  @apply block text-[10px] font-medium text-lightText mb-[4px];
+}
+
+.form-input-container {
+  @apply rounded-[8px] outline-none px-[5px] py-[4px] border-[#333] border-solid border-[1px] flex relative;
+}
+
+.form-input {
+  @apply px-[35px] py-[5px] outline-none;
+}
+
+.form-input-icon {
+  @apply absolute left-[10px] top-[50%] translate-y-[-50%];
+}
+
+.form-btn {
+  @apply block bg-btnBg text-white w-[100%] py-[12px] rounded-[8px];
+}

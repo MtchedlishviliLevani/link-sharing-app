@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        instrument: ["InstrumentSans", "sans-serif"],
+      },
       colors: {
         // Primary Colors
         primary: "#007BFF", // Bright Blue
@@ -23,6 +26,9 @@ export default {
         // Additional Colors
         lightBlue: "#B8DAFF", // Light Blue for hover effects
         softYellow: "#FFC107", // Soft Yellow for highlights/notifications
+
+        //button collor
+        btnBg: "#633cff",
       },
     },
   },
