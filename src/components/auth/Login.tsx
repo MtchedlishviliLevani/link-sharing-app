@@ -85,7 +85,7 @@ function Login({ setIsRegistired }: Props) {
                     Don't have an account?
                     <button
                         onClick={() => setIsRegistired(false)}
-                        className="text-primary"
+                        className="text-primary ml-[10px]"
                     >
                         Create account
                     </button>

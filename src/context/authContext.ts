@@ -14,7 +14,9 @@ export interface AuthContext {
   handleSignUp: (
     email: string,
     password: string,
-    name: string
+    name: string,
+    setIsRegistired: React.Dispatch<React.SetStateAction<boolean>>,
+    setRegisterError: React.Dispatch<React.SetStateAction<string>>
   ) => Promise<void>;
   handleLoggout: () => Promise<void>;
 }

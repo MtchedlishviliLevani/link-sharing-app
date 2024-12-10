@@ -19,7 +19,7 @@ body {
 }
 
 .form {
-  @apply flex flex-col gap-[25px] bg-white p-[40px] rounded-[12px];
+  @apply flex flex-col gap-[15px] bg-white p-[40px] rounded-[12px];
 }
 
 .form-h1 {

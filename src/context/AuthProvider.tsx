@@ -5,6 +5,15 @@ import { loggout, loginWithEmailAndPassword, signUpWithEmailAndPassword } from "
 import { UserType } from "@/context/authContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase/firebase";
+import { FirebaseError } from "firebase/app";
+
+type HandleSignUp = (
+    email: string,
+    password: string,
+    name: string,
+    setIsRegistired: React.Dispatch<React.SetStateAction<boolean>>,
+    setRegisterError: React.Dispatch<React.SetStateAction<string>>
+) => Promise<void>;
 
 function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserType>(null);
@@ -26,13 +35,21 @@ function AuthProvider({ children }: { children: ReactNode }) {
             }
         }
     }
-    const handleSignUp = async (email: string, password: string, name: string) => {
+    const handleSignUp: HandleSignUp = async (email, password, name, setIsRegistired, setRegisterError) => {
         try {
             const newUser = await signUpWithEmailAndPassword(email, password, name)
             if (newUser) {
                 setUser(newUser)
+                setIsRegistired(true)
             }
         } catch (error) {
+            if (error instanceof FirebaseError) {
+                if (error.code === 'auth/email-already-in-use') {
+                    setRegisterError("The email address is already in use. Please use a different email.");
+                } else {
+                    setRegisterError(error.message || "An unexpected error occurred.");
+                }
+            }
             console.error("something wrong", error)
         }
     }
@@ -74,3 +91,4 @@ function AuthProvider({ children }: { children: ReactNode }) {
 }
 
 export default AuthProvider
+

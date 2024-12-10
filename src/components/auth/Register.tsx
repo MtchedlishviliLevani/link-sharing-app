@@ -4,29 +4,40 @@ import { useState } from "react";
 import emailIcon from "@images/icon-email.svg"
 import passwordIcon from "@images/icon-password.svg"
 import FormBtn from "@/components/common/FormBtn";
+import { FirebaseError } from "firebase/app";
 
 interface Props {
     setIsRegistired: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 function Register({ setIsRegistired }: Props) {
-    const { handleSignUp, } = useAuth();
+    const { handleSignUp } = useAuth();
     const [formData, setFormData] = useState({ displayName: "", email: "", password: "", confirm_password: "" })
-    const [registerError, setRegisterError] = useState<string>("")
+    const [registerError, setRegisterError] = useState<string>("");
+    const [passwordError, setPasswordError] = useState('')
+
+
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         const { displayName, email, password, confirm_password } = formData;
 
         if (confirm_password !== password) {
-            setRegisterError("Passwords do not match");
+            setPasswordError("Passwords do not match");
+            return;
+        }
+        if (confirm_password.length < 8 && password.length < 8) {
+            setPasswordError("Minimum 8 letters")
             return;
         }
 
         try {
-            await handleSignUp(email, password, displayName);
-            setIsRegistired((prev) => !prev);
+            await handleSignUp(email, password, displayName, setIsRegistired, setRegisterError)
         } catch (error) {
-            setRegisterError(error.message || "An unexpected error occurred");
+            if (error instanceof FirebaseError) {
+                console.error(error.message)
+            }
+
         }
     }
 
@@ -66,10 +77,11 @@ function Register({ setIsRegistired }: Props) {
                     label: "Password",
                     value: formData?.password,
                     onChange: handleOnChange,
-                    placeholder: "Enter your Password",
+                    placeholder: "At least 8 characters",
                     icon: passwordIcon,
                     name: "password"
                 }} />
+                {passwordError && <p className="text-red-600">{passwordError}</p>}
             </div>
             <div>
                 <Input inputProps={{
@@ -77,15 +89,17 @@ function Register({ setIsRegistired }: Props) {
                     label: "Confirm Password",
                     value: formData?.confirm_password,
                     onChange: handleOnChange,
-                    placeholder: "Enter your Confirm Password",
+                    placeholder: "At least 8 characters",
                     icon: passwordIcon,
                     name: "confirm_password"
                 }} />
+                {passwordError && <p className="text-red-600">{passwordError}</p>}
+
             </div>
             <FormBtn>Register</FormBtn>
             <p> Already have an account?<button
                 onClick={() => setIsRegistired(true)}
-                className="text-primary"
+                className="text-primary ml-[10px]"
             >
                 Login
             </button></p>
