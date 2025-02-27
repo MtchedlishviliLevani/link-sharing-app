@@ -1,16 +1,8 @@
 interface ObjProps {
     inputProps: InputProps
 }
-interface InputProps {
-    type: string,
-    label: string,
-    value: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    placeholder: string,
-    icon: string,
-    name: string
 
-}
+import { InputProps } from "@/types";
 function Input({ inputProps }: ObjProps) {
     const { type, label, value, onChange, placeholder, icon, name } = inputProps;
     return (

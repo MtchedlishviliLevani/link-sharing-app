@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 
+import { getFirestore } from "firebase/firestore";
+
 //added
 import { getAuth } from "firebase/auth";
 
@@ -19,7 +21,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+const filteStore = getFirestore(app);
 
 //
 // const analytics = getAnalytics(app);
-export { auth };
+export { auth, filteStore };
+
+// new
+// Document id  s6UhthMSKBtbJ3o9uaZ7
+// 1MAtGfWKwRxuXbwANooP

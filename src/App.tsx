@@ -25,11 +25,13 @@ function App() {
   console.log(user)
   return (
     <>
-      <RouterProvider router={route} />
-      {/* {user ? <div>hello {user.email}</div> : <Login />} */}
-      <button onClick={loggout}>LOggout</button>
-      {/* <Login /> */}
-      {/* <Register /> */}
+      <div className="container mx-auto">
+        <RouterProvider router={route} />
+        {/* {user ? <div>hello {user.email}</div> : <Login />} */}
+        <button onClick={loggout}>LOggout</button>
+        {/* <Login /> */}
+        {/* <Register /> */}
+      </div>
     </>
   )
 }

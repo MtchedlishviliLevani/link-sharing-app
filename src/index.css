@@ -45,3 +45,11 @@ body {
 .form-btn {
   @apply block bg-btnBg text-white w-[100%] py-[12px] rounded-[8px];
 }
+
+.svg-icon:hover svg path,
+.svg-icon:hover h3 {
+  fill: #633cff; /* Change to your hover color */
+  cursor: pointer; /* Optional: Add a pointer for better UX */
+  color: #633cff;
+  transition: 0.3s;
+}
