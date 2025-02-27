@@ -6,6 +6,10 @@ export default {
       fontFamily: {
         instrument: ["InstrumentSans", "sans-serif"],
       },
+      container: {
+        center: true,
+        padding: "15px",
+      },
       colors: {
         // Primary Colors
         primary: "#007BFF", // Bright Blue
@@ -29,6 +33,10 @@ export default {
 
         //button collor
         btnBg: "#633cff",
+      },
+      boxShadow: {
+        dropdown: "0 0 32px 0 rgba(0,0,0,.1)",
+        input: "0 0 32px 0 rgba(99,60,255,.25)",
       },
     },
   },
