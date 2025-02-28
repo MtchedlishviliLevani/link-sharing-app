@@ -4,13 +4,13 @@ import Auth from '@/pages/Auth'
 import Home from '@/pages/Home'
 import Preview from '@/pages/Preview'
 import { loggout } from '@/services/authService'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from "react-router"
 
 const route = createBrowserRouter([{
   path: "/",
   element: <ProtectedRoute />, // Wrap Home and Preview with ProtectedRoute
   children: [
-    { path: "/", element: <Home /> }, // Home page (protected)
+    { path: "/", element: <Home />, index: true }, // Home page (protected)
     { path: "preview", element: <Preview /> }, // Preview page (protected)
   ],
 },
@@ -18,7 +18,9 @@ const route = createBrowserRouter([{
   path: "/auth", element: <Auth />,// Auth page (public route)
 
 },
-])
+
+]
+)
 
 function App() {
   const { user } = useAuth()

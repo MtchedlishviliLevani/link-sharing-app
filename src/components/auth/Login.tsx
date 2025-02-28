@@ -4,7 +4,7 @@ import emailIcon from "@images/icon-email.svg";
 import passwordIcon from "@images/icon-password.svg";
 import Input from "@/components/common/Input";
 import FormBtn from "@/components/common/FormBtn";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { FirebaseError } from "firebase/app";
 
 interface Props {

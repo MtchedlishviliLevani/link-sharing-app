@@ -2,7 +2,7 @@ import logo from "@images/logo-devlinks-large.svg"
 import smallLogo from "@images/logo-devlinks-small.svg"
 import eyeIcon from "@images/eye-icon.svg"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "react-router"
 function Header() {
     const [activeContent, setActiveContent] = useState("Links")
     return (

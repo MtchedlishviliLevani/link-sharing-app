@@ -5,12 +5,17 @@ import { useState } from "react";
 import data from "@/assets/data/dropDown";
 import LinkInput from "@/components/common/LinkInput";
 import type { ArrayProps, LinkList } from "@/types";
-
-
-
+import { getData } from "@/firebase/getData";
+import { getSingleDoc } from "@/firebase/getSingleDoc";
+import { addData } from "@/firebase/addData";
 function Home() {
+
+    const fetchData = async () => {
+        await getData("userLink2");
+        await getSingleDoc("1MAtGfWKwRxuXbwANooP");
+    };
+
     const [LinksList, setLinksList] = useState<LinkList[]>([{ data: data[0], id: "1", address: "" }])
-    console.log(data[0])
     function addNewLink() {
         // if address is empty return alert
         if (LinksList.some((item) => item.address.length === 0)) return alert("Please fill the link");
@@ -45,7 +50,8 @@ function Home() {
 
     return (
         <div>
-            home
+            <h1 onClick={fetchData}>home</h1>
+            <h2 onClick={() => addData("userLink2", [{ data: [{ icon: "vced1" }] }])}>add</h2>
             <div className="flex flex-col gap-[40px]">
                 <Header />
                 <img className="hidden xl:block" src={phoneMockup} alt="" />
