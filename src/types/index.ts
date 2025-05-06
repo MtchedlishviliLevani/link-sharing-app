@@ -18,6 +18,7 @@ export interface LinkInputProps {
   updateLink: (id: string, address: string) => void;
   address: string;
   id: string;
+  error?: string;
 }
 
 // LinksDropDown Component
@@ -43,4 +44,5 @@ export interface LinkList {
   };
   id: string;
   address: string;
+  error?: string;
 }
