@@ -1,12 +1,15 @@
 import { useState } from "react";
 import FormBtn from "@/components/common/FormBtn";
+import { auth, filteStore } from "@/firebase/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 function ProfileDetails() {
     const [profileData, setProfileData] = useState({
         firstName: "",
         lastName: "",
         email: "",
-        profileImage: null as File | null
+        profileImage: null as File | null,
+        profileImageBase64: ""
     });
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,7 +19,18 @@ function ProfileDetails() {
                 alert("Image must be below 1MB");
                 return;
             }
-            setProfileData(prev => ({ ...prev, profileImage: file }));
+
+            // Convert image to base64
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setProfileData(prev => ({
+                    ...prev,
+                    profileImage: file,
+                    profileImageBase64: base64String
+                }));
+            };
+            reader.readAsDataURL(file);
         }
     };
 
@@ -25,9 +39,30 @@ function ProfileDetails() {
         setProfileData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSave = () => {
-        // TODO: Implement save functionality
-        console.log("Saving profile data:", profileData);
+    const handleSave = async () => {
+        const { firstName, lastName, email, profileImageBase64 } = profileData;
+        const userId = auth.currentUser?.uid;
+
+        if (!userId) {
+            console.error("User not authenticated");
+            return;
+        }
+
+        try {
+            // Save profile data to Firestore
+            const userProfileRef = doc(filteStore, "profiles", userId);
+            await setDoc(userProfileRef, {
+                firstName,
+                lastName,
+                email,
+                profileImage: profileImageBase64,
+                updatedAt: new Date().toISOString()
+            });
+
+            console.log("Profile data saved successfully");
+        } catch (error) {
+            console.error("Error saving profile:", error);
+        }
     };
 
     return (
@@ -44,12 +79,12 @@ function ProfileDetails() {
                 <div className="space-y-4">
                     <h2 className="text-sm font-medium text-gray-700">Profile Picture</h2>
                     <div className="flex items-center gap-4">
-                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                            {profileData.profileImage ? (
+                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                            {profileData.profileImageBase64 ? (
                                 <img
-                                    src={URL.createObjectURL(profileData.profileImage)}
+                                    src={profileData.profileImageBase64}
                                     alt="Profile"
-                                    className="w-full h-full rounded-full object-cover"
+                                    className="w-full h-full object-cover"
                                 />
                             ) : (
                                 <span className="text-2xl text-gray-500">?</span>
@@ -150,4 +185,4 @@ function ProfileDetails() {
     );
 }
 
-export default ProfileDetails; 
+export default ProfileDetails;

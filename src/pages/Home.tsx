@@ -8,8 +8,10 @@ import FormBtn from "@/components/common/FormBtn";
 import { addData } from "@/firebase/addData";
 import { useNavigate } from "react-router";
 import { getData } from "@/firebase/getData";
-import { auth } from "@/firebase/firebase";
+import { auth, filteStore } from "@/firebase/firebase";
 import ProfileDetails from "@/components/profile/ProfileDetails";
+import rightArrow from "@/assets/images/icon-arrow-right.svg";
+import { doc, getDoc } from "firebase/firestore";
 
 interface FirebaseData {
     id: string;
@@ -21,11 +23,19 @@ interface FirebaseData {
     userId: string;
 }
 
+interface ProfileData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    profileImage: string;
+}
+
 function Home() {
     const [LinksList, setLinksList] = useState<LinkList[]>([{ data: data[0], id: "1", address: "" }]);
     const [dropDownContentList] = useState([data]);
     const [isSaving, setIsSaving] = useState(false);
     const [activeContent, setActiveContent] = useState("Links");
+    const [profileData, setProfileData] = useState<ProfileData | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,6 +45,12 @@ function Home() {
                 if (!user) {
                     navigate('/auth');
                     return;
+                }
+
+                // Load profile data
+                const profileDoc = await getDoc(doc(filteStore, "profiles", user.uid));
+                if (profileDoc.exists()) {
+                    setProfileData(profileDoc.data() as ProfileData);
                 }
 
                 const savedData = await getData('links') as FirebaseData[];
@@ -57,7 +73,7 @@ function Home() {
                     }
                 }
             } catch (error) {
-                console.error('Error loading existing links:', error);
+                console.error('Error loading existing data:', error);
             }
         }
 
@@ -136,12 +152,18 @@ function Home() {
                 <div className="sc-hBURej fxdOIl" style={{ background: "rgb(26, 26, 26)", height: "100%", display: "flex", alignItems: "center", padding: "0 16px", borderRadius: "8px" }}>
                     <div className="left--wrapper" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <div className="logo--container">
-                            <img src={link.data.icon} alt={link.data.name} width="16" height="16" />
+                            <img
+                                src={link.data.icon}
+                                alt={link.data.name}
+                                width="16"
+                                height="16"
+                                style={{ filter: "brightness(0) invert(1)" }}
+                            />
                         </div>
                         <p style={{ color: "white", margin: 0 }}>{link.data.name}</p>
                     </div>
                     <img
-                        src="/Link-Sharing-App/static/media/icon-arrow-right.21bc7dd4ec89a712e1e32835433f9e69.svg"
+                        src={rightArrow}
                         alt="right arrow"
                         style={{ marginLeft: "auto" }}
                     />
@@ -167,9 +189,40 @@ function Home() {
                             >
                                 <path stroke="#737373" d="M1 54.5C1 24.953 24.953 1 54.5 1h199C283.047 1 307 24.953 307 54.5v523c0 29.547-23.953 53.5-53.5 53.5h-199C24.953 631 1 607.047 1 577.5v-523Z" />
                                 <path fill="#fff" stroke="#737373" d="M12 55.5C12 30.923 31.923 11 56.5 11h24C86.851 11 92 16.149 92 22.5c0 8.008 6.492 14.5 14.5 14.5h95c8.008 0 14.5-6.492 14.5-14.5 0-6.351 5.149-11.5 11.5-11.5h24c24.577 0 44.5 19.923 44.5 44.5v521c0 24.577-19.923 44.5-44.5 44.5h-195C31.923 621 12 601.077 12 576.5v-521Z" />
-                                <circle cx="153.5" cy="112" r="48" fill="#EEE" />
-                                <rect width="160" height="16" x="73.5" y="185" fill="#EEE" rx="8" />
-                                <rect width="72" height="8" x="117.5" y="214" fill="#EEE" rx="4" />
+
+                                {/* Profile Image */}
+                                {profileData?.profileImage ? (
+                                    <foreignObject x="105.5" y="64" width="96" height="96">
+                                        <img
+                                            src={profileData.profileImage}
+                                            alt="Profile"
+                                            className="w-full h-full rounded-full object-cover"
+                                        />
+                                    </foreignObject>
+                                ) : (
+                                    <circle cx="153.5" cy="112" r="48" fill="#EEE" />
+                                )}
+
+                                {/* Name and Email */}
+                                {profileData ? (
+                                    <>
+                                        <foreignObject x="73.5" y="185" width="160" height="16">
+                                            <div className="text-center font-semibold">
+                                                {profileData.firstName} {profileData.lastName}
+                                            </div>
+                                        </foreignObject>
+                                        <foreignObject x="117.5" y="214" width="72" height="8">
+                                            <div className="text-center text-sm text-gray-500">
+                                                {profileData.email}
+                                            </div>
+                                        </foreignObject>
+                                    </>
+                                ) : (
+                                    <>
+                                        <rect width="160" height="16" x="73.5" y="185" fill="#EEE" rx="8" />
+                                        <rect width="72" height="8" x="117.5" y="214" fill="#EEE" rx="4" />
+                                    </>
+                                )}
 
                                 {/* Render actual links */}
                                 {LinksList.map((_, index) => renderLinkContent(index))}
